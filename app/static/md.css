@@ -1,0 +1,64 @@
+/* SPDX-License-Identifier: AGPL-3.0-or-later
+   Voice Review, the Markdown window (2026-10-29). The text is set like Markdown Preview Enhanced's default
+   "github-light" look (its fonts, sizes and colours), on a white page over the PDF window's grey. */
+#pages.mdpages { padding: 18px 16px 40vh; }
+.mdpaper { position: relative; max-width: 50em; margin: 0 auto; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.4);
+  padding: 2.2em 3em 3em; font-size: 16px; user-select: text; cursor: text; }
+body.fs #pages.mdpages { padding: 12px 16px 40vh; }
+body.copying .mdpaper { cursor: copy; }
+@media (max-width: 700px) { .mdpaper { padding: 1.2em 1em 2em; } }
+
+.markdown-body { font-family: 'Helvetica Neue', Helvetica, 'Segoe UI', Arial, freesans, sans-serif; font-size: 1em;
+  line-height: 1.6; color: #333; word-wrap: break-word; }
+.markdown-body > :first-child { margin-top: 0; }
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+  line-height: 1.2; margin-top: 1em; margin-bottom: 16px; color: #000; font-weight: 600; }
+.markdown-body h1 { font-size: 2.25em; padding-bottom: .3em; }
+.markdown-body h2 { font-size: 1.75em; padding-bottom: .3em; }
+.markdown-body h3 { font-size: 1.5em; }
+.markdown-body h4 { font-size: 1.25em; }
+.markdown-body h5, .markdown-body h6 { font-size: 1em; }
+.markdown-body h6 { color: #5c5c5c; }
+.markdown-body strong { color: #000; }
+.markdown-body del { color: #5c5c5c; }
+.markdown-body a { color: #08c; text-decoration: none; }
+.markdown-body a:hover { color: #00a3f5; }
+.markdown-body .mdlink { color: #08c; }
+.markdown-body .mdlink:hover { text-decoration: underline dotted; }
+.markdown-body img { max-width: 100%; cursor: pointer; }
+.markdown-body p, .markdown-body blockquote, .markdown-body ul, .markdown-body ol, .markdown-body table, .markdown-body pre {
+  margin-top: 0; margin-bottom: 16px; }
+.markdown-body ul, .markdown-body ol { padding-left: 2em; }
+.markdown-body li > p { margin-top: 0; margin-bottom: 0; }
+.markdown-body li + li { margin-top: .25em; }
+.markdown-body ul ul, .markdown-body ol ol, .markdown-body ul ol, .markdown-body ol ul { margin-bottom: 0; }
+.markdown-body blockquote { margin-left: 0; padding: 0 15px; color: #5c5c5c; border-left: 4px solid #d6d6d6; }
+.markdown-body hr { height: 4px; margin: 32px 0; background-color: #d6d6d6; border: 0 none; }
+.markdown-body code { font-family: Menlo, Monaco, Consolas, 'Courier New', monospace; font-size: .85em; color: #000;
+  background-color: #f0f0f0; border-radius: 3px; padding: .2em 0; }
+.markdown-body code::before, .markdown-body code::after { letter-spacing: -.2em; content: "\00a0"; }
+.markdown-body pre { padding: 1em; overflow: auto; line-height: 1.45; background: #f5f5f5; border: 1px solid #ddd; border-radius: 3px; }
+.markdown-body pre > code { padding: 0; background: transparent; font-size: .85em; white-space: pre; }
+.markdown-body pre > code::before, .markdown-body pre > code::after { content: none; }
+.markdown-body table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+.markdown-body table th { font-weight: 700; color: #000; }
+.markdown-body table td, .markdown-body table th { border: 1px solid #d6d6d6; padding: 6px 13px; }
+.markdown-body table tr:nth-child(2n) { background: #f7f7f7; }
+
+/* comments */
+.mdhl { background: rgba(255, 221, 0, .45); cursor: pointer; border-radius: 2px; }
+.mdhl.active { background: rgba(255, 190, 0, .75); }
+.mdhl.done { background: rgba(160, 160, 160, .28); }
+.mdarea { outline: 3px solid rgb(237, 89, 26); outline-offset: 2px; }
+.mdarea.active { outline-width: 4px; }
+.mdarea.done { outline: 2px dashed #aaa; }
+.mdbadge { display: inline-block; min-width: 1.15em; height: 1.15em; line-height: 1.15em; padding: 0 .3em; margin: 0 .15em 0 .1em;
+  border-radius: .6em; background: #d4a000; color: #fff; font: bold 11px/1.5 system-ui, sans-serif; text-align: center;
+  vertical-align: super; cursor: pointer; user-select: none; }
+.mdbadge.empty { background: #999; }
+.mdbadge.pending { background: #2e7dd7; animation: pulse 1s infinite; }
+.mdbadge.rec { background: #e01b1b; animation: pulse .6s infinite; }
+.mdbadge.flag { background: #e8890c; }
+.mdbadge.done { background: #6a8f6d; }
+::highlight(vrhit) { background-color: rgba(60, 200, 90, .38); }
+::highlight(vrcur) { background-color: rgba(0, 160, 60, .7); color: #fff; }

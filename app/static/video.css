@@ -1,0 +1,17 @@
+#stage { flex: 1; display: flex; flex-direction: column; align-items: center; background: #1e1f22; padding: 12px; min-width: 0; overflow: auto; }
+#video { max-width: 100%; max-height: 66vh; background: #000; border-radius: 4px; }
+#timeline { position: relative; width: 100%; max-width: 1280px; height: 22px; margin: 8px 0 4px; background: #2f3136; border-radius: 4px; }
+.mark { position: absolute; top: 3px; width: 16px; height: 16px; margin-left: -8px; border-radius: 8px; background: #c0392b; color: #fff;
+  font-size: 10px; line-height: 16px; text-align: center; cursor: pointer; font-weight: 600; }
+.mark.empty { background: #888; }
+.mark.pending { background: #2e7dd7; animation: pulse 1s infinite; }
+.mark.rec { background: #e01b1b; animation: pulse .6s infinite; }
+.mark.active { box-shadow: 0 0 0 2px #f3df7a; }
+#playhead { position: absolute; top: 0; bottom: 0; width: 2px; background: #f3df7a; pointer-events: none; }
+#panel { width: 100%; max-width: 1280px; background: #fffdf3; border-radius: 6px; padding: 8px; }
+#panelHead { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #554; margin-bottom: 6px; }
+#panelHead.listening { color: #c01515; font-weight: 600; }
+#panelText { width: 100%; height: 80px; resize: vertical; font: 14px/1.4 "Segoe UI", system-ui, sans-serif; border: 1px solid #ccc; border-radius: 4px; padding: 6px; }
+#panelText.pending { background: #eef5ff; }
+.item .t { font-weight: 600; color: #8a6d00; margin-right: 6px; }
+.mark.done { background: #6a8f6d; opacity: .7; }

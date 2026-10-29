@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Voice Review</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<!-- One row (Daniel, 2026-10-27): no file name (it is in the window title), a ✓ for "saved", a 🎤 that turns red
+     while listening; safe mode and the other choices are in ⚙ (settings.js adds ⚙ and the logo). -->
+<header>
+  <strong id="title" hidden>…</strong>
+  <span id="status" title="Click to save now"></span>
+  <span id="stt" class="mic"></span>
+  <span id="busy" class="pill busy" hidden></span>
+  <button id="flagPill" class="pill flag" hidden></button>
+  <span class="spacer"></span>
+  <label title="Start listening as soon as you finish a highlight"><input type="checkbox" id="autoDictate"> Dictate right after highlighting</label>
+  <!-- Comments first, the button used most; then Copy, used rarely (Daniel, 2026-10-27) -->
+  <button id="toggleList">Comments (<span id="count">0</span>)</button>
+  <button id="copyBtn" title="Copy text: click here, then drag across the text you want. (Ctrl + drag copies at any time.)">📋 Copy</button>
+  <button id="searchBtn" title="Search the text (Ctrl+F)">🔍</button>
+  <button id="zoomOut" title="Zoom out">−</button><span id="zoomLabel"></span><button id="zoomIn" title="Zoom in">+</button>
+  <button id="fullBtn" title="Full screen: the page fills the whole screen height (F). Esc to leave.">⛶ Full screen</button>
+  <button id="finishBtn" title="Finish: waits until every comment is transcribed, shows any that may not be courteous, then saves and closes">✓ Finish</button>
+  <button id="helpBtn" title="How it works">?</button>
+</header>
+<main>
+  <div id="pages"></div>
+  <aside id="list"></aside>
+</main>
+
+<div id="fsbar" hidden>
+  <span id="fsStatus"></span>
+  <button id="fsFlag" class="pill flag" hidden></button>
+  <label title="Start listening as soon as you finish a highlight"><input type="checkbox" id="fsAutoDictate"> Dictate after highlight</label>
+  <button id="fsSearch" class="iconBtn" title="Search the text (Ctrl+F)">🔍</button>
+  <button id="fsList" title="Show or hide the comment list">Comments</button>
+  <button id="fsHelp" class="iconBtn" title="How it works, and questions (FAQ)">?</button>
+  <button id="fsFinish" title="Finish: waits until every comment is transcribed, shows any that may not be courteous, then saves and closes">✓ Finish</button>
+  <button id="fsExit" title="Leave full screen (Esc or F)">✕ Exit full screen</button>
+</div>
+
+<!-- Finish (2026-10-28): waits for the transcriptions, lists comments that may not be courteous, then closes. -->
+<div id="finishBox" hidden>
+  <div class="finishCard">
+    <h3 id="finishTitle"></h3>
+    <p id="finishMsg"></p>
+    <div id="finishList"></div>
+    <div class="finishFoot">
+      <button id="finishAll" hidden></button>
+      <button id="finishSafe" hidden title="What you say from now on is rewritten politely before it is written down">Turn on safe mode</button>
+      <span class="spacer"></span>
+      <button id="finishBack">Back to the document</button>
+      <button id="finishClose"></button>
+    </div>
+  </div>
+</div>
+
+<!-- Search (2026-10-14): hidden until Ctrl+F or 🔍; floats over the page in both views. -->
+<div id="searchbar" hidden>
+  <input id="searchInput" type="text" placeholder="Search the text…" autocomplete="off" spellcheck="false">
+  <span id="searchCount"></span>
+  <button id="searchPrev" title="Previous match (Shift+Enter)">↑</button>
+  <button id="searchNext" title="Next match (Enter, F3)">↓</button>
+  <button id="searchClose" title="Close the search (Esc)">✕</button>
+</div>
+
+<div id="popup" hidden>
+  <div class="popup-head" title="Drag to move this box anywhere; it stays there. Double-click to put it back under the highlight."><span id="popupWhere"></span><button id="popupClose" title="Close (Esc)">×</button></div>
+  <div id="popupQuote"></div>
+  <div id="flagBar" hidden><span>⚠ This comment may not be courteous.</span>
+    <button id="flagRewrite" title="A small model on this computer rewrites it politely; you can still edit it">Rewrite politely</button>
+    <button id="flagKeep" title="Keep it as you said it">Keep as is</button></div>
+  <textarea id="popupText" placeholder="Type here, or press Dictate and speak…"></textarea>
+  <div class="popup-foot">
+    <button id="micBtn">● Dictate</button>
+    <span id="micStatus"></span>
+    <span class="spacer"></span>
+    <button id="doneBtn" title="The comment has been dealt with: hide it from the page and the list (Show done brings it back)">Mark as done</button>
+    <button id="deleteBtn" class="danger" title="Remove this highlight and its comment">Delete</button>
+  </div>
+</div>
+
+<div id="help" hidden>
+  <h3>How it works</h3>
+  <ul>
+    <li><b>Drag across text</b> to highlight it (yellow).</li>
+    <li><b>Shift + drag</b>, or drag on a figure or blank area, to mark a <b>region</b> (orange box).</li>
+    <li><b>📋 Copy</b>, then drag across text, or <b>Ctrl + drag</b> at any time, to <b>copy</b> it, without making a highlight: it turns blue and goes to the clipboard as plain text, with no formatting. Paste it anywhere with <b>Ctrl+V</b>.</li>
+    <li><b>Prefer to type, or need to fix a word?</b> Click the highlight and type in its box. Typed text is saved as it is.</li>
+    <li><b>Double-click a highlight</b> and speak. Click <b>Stop</b>, press <b>Ctrl+Enter</b>, close the note, or double-click the next highlight to finish. The text fills in by itself later.</li>
+    <li>Click a highlight to read or type its comment. <b>Esc</b> closes it.</li>
+    <li><b>Drag the comment box by its title bar</b> to see the text underneath, even while you speak (recording goes on). It stays where you leave it, also for the next comments; normal view and full screen each remember their own spot. <b>Double-click the title bar</b> to put it back under the highlight.</li>
+    <li><b>Ctrl+F</b> (or <b>🔍</b>) to search the text, also in full screen: <b>Enter</b> / <b>Shift+Enter</b> (or <b>F3</b>) go to the next / previous match, <b>Esc</b> or <b>✕</b> closes it. Matches are green; they never get in the way of highlighting.</li>
+    <li><b>⛶ Full screen</b> (or <b>F</b>): the page fills the whole screen height; <b>Page Down / Page Up</b> go page by page; <b>Esc</b> or <b>F</b> to leave.</li>
+    <li><b>Before you send the PDF</b>, wait until nothing is queued (the window title shows "⏳ 3 left" until then). If you close the window earlier, a notification tells you when the file is ready to send. Until then, every unfinished comment says in the PDF itself that it is still being transcribed, so a file sent too early never hides a missing comment.</li>
+    <li>Recordings wait in a queue and are transcribed one at a time in the background, so you never wait: move on to the next comment. A blue badge means "queued"; the text fills in by itself. Closing the window, or even a crash or restart, does not lose a recording: it is finished and saved into the PDF later.</li>
+    <li><b>🎤</b> on the top bar turns red while it listens. <b>⏳ 3 left</b> means three recordings are still being transcribed.</li>
+    <li><b>⚙ Settings</b>: the languages you speak (any of 100), the microphone, dictate right after highlighting, safe mode and its rules, your initials, keeping your recordings, and where comments are saved.</li>
+    <li><b>🛡 Safe mode</b> (in ⚙): what you say is rewritten politely before it is written down (no swearing, no insults, no remarks about anyone's gender or origin; every technical point kept). Done on this computer.</li>
+    <li>Everything saves automatically (<b>✓</b> on the top bar; point at it to see the file): a <b>_review.pdf</b> copy, so the original PDF is never changed, or, if you chose it in <b>⚙</b>, the PDF itself (for Zotero).</li>
+    <li>Speech is transcribed on this computer. Nothing is sent to the cloud.</li>
+  </ul>
+  <button id="helpClose">Got it</button>
+</div>
+
+<script src="/static/app.js"></script>
+<script src="/static/settings.js"></script>
+</body>
+</html>

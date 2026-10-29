@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Voice Review · video</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="/static/video.css">
+</head>
+<body>
+<header>
+  <strong id="title" hidden>…</strong>
+  <span id="status" title="Click to save now"></span>
+  <span id="stt" class="mic"></span>
+  <span id="busy" class="pill busy" hidden></span>
+  <span class="spacer"></span>
+  <label title="Pausing the video starts listening; Play stops it"><input type="checkbox" id="listenOnPause" checked> Listen when I pause</label>
+  <button id="toggleList">Comments (<span id="count">0</span>)</button>
+  <button id="helpBtn" title="How it works">?</button>
+</header>
+<!-- Playback speed (2026-10-27): settings.js moves this into the ⚙ panel (Daniel: one top bar, no Advanced row) -->
+<div id="speedRow" hidden>
+    <span id="speedBtns" class="seg">
+      <button data-r="0.8">−20%</button><button data-r="0.9">−10%</button><button data-r="0.93">−7%</button>
+      <button data-r="1">Normal</button>
+      <button data-r="1.07">+7%</button><button data-r="1.1">+10%</button><button data-r="1.2">+20%</button>
+    </span>
+</div>
+<main>
+  <section id="stage">
+    <video id="video" controls preload="auto"></video>
+    <div id="timeline" title="Comments: click one to go there"></div>
+    <div id="panel">
+      <div id="panelHead"><span id="panelWhere">Pause the video to comment.</span><span class="spacer"></span>
+        <button id="stopBtn" hidden>■ Stop listening</button>
+        <button id="doneBtn" hidden title="The comment has been dealt with: hide it from the timeline and the list (Show done brings it back)">Mark as done</button>
+        <button id="deleteBtn" class="danger" hidden>Delete</button></div>
+      <textarea id="panelText" placeholder="Pause the video and speak, or type here." disabled></textarea>
+    </div>
+  </section>
+  <aside id="list"></aside>
+</main>
+
+<div id="help" hidden>
+  <h3>How it works</h3>
+  <ul>
+    <li><b>Pause</b> the video (Space, or the ⏸ button) and <b>speak</b>. The microphone is only on while the video is paused, so you never talk over it.</li>
+    <li><b>Play</b> again (Space) to continue. Your comment is pinned to the moment you paused. You can refer to other moments by voice: "ten seconds ago…", "at one minute thirty…".</li>
+    <li>Pause and say nothing: no comment is kept.</li>
+    <li>Recordings are transcribed one at a time in the background; the text fills in by itself (blue = queued). Closing the window does not lose anything.</li>
+    <li>Click a comment, in the list or on the bar under the video, to jump there and read or edit it. ← → skip 5 seconds.</li>
+    <li><b>Speed</b> (in <b>⚙</b>): 7%, 10% or 20% slower or faster; the voice keeps its pitch. Keys <b>[</b> slower, <b>]</b> faster. Remembered for the next video.</li>
+    <li><b>🎤</b> on the top bar turns red while it listens. <b>⚙</b> also holds the languages you speak (any of 100), the microphone and 🛡 safe mode.</li>
+    <li>Comments save automatically to <b>&lt;video&gt;_review.md</b> next to the video, plain text you can read or send. Speech never leaves this computer.</li>
+  </ul>
+  <button id="helpClose">Got it</button>
+</div>
+
+<script src="/static/video.js"></script>
+<script src="/static/settings.js"></script>
+</body>
+</html>
