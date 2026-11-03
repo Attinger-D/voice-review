@@ -1,0 +1,9 @@
+# Voice Review on Linux / macOS. install.sh pins these with ../constraints.txt in its own environment;
+# with --python it adds only what is missing. llama-cpp-python: ready-built CPU wheels for Linux at
+# https://abetlen.github.io/llama-cpp-python/whl/cpu (install.sh adds that index); on macOS it compiles.
+faster-whisper
+PyMuPDF
+Flask
+huggingface_hub
+llama-cpp-python
+markdown-it-py

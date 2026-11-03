@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Two documents · voice review</title>
+<link rel="icon" href="data:,">
+<style>
+  /* Two documents side by side in one full-screen window (Daniel, 2026-10-19). Each half is the
+     ordinary voice review app (its own server, its own _review.pdf) in its no-header layout.
+     "Comments" in one half shows that document's comment list in place of the other document. */
+  html, body { margin: 0; height: 100%; background: #6b6e73; overflow: hidden; }
+  #wrap { display: flex; height: 100%; }
+  iframe { border: 0; height: 100%; width: 50%; display: block; }
+  iframe + iframe { border-left: 2px solid #2b2d31; }
+  iframe.wide { width: 100%; }
+  iframe.gone { display: none; }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <iframe id="left" allow="microphone; clipboard-read; clipboard-write"></iframe>
+  <iframe id="right" allow="microphone; clipboard-read; clipboard-write"></iframe>
+</div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const L = document.getElementById("left"), R = document.getElementById("right");
+  L.src = q.get("l"); R.src = q.get("r");
+  document.title = (q.get("t") || "Two documents") + " · voice review";
+  L.addEventListener("load", () => L.focus());          // the left document (the one you comment) has the keyboard
+  window.addEventListener("message", (ev) => {
+    const d = ev.data || {};
+    if (!("duoList" in d)) return;
+    const me = d.side === "right" ? R : L, other = me === L ? R : L;
+    if (d.duoList) {                                    // this half's comments replace the other document
+      other.contentWindow.postMessage({ duoClose: true }, "*");
+      other.classList.add("gone"); me.classList.add("wide");
+    } else {
+      other.classList.remove("gone"); me.classList.remove("wide");
+    }
+    me.focus();
+  });
+</script>
+</body>
+</html>

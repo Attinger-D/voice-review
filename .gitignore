@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+models/
+config.json
+*.zip
+*_review.pdf
+*_review.json
+*_review.md
