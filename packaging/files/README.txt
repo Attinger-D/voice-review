@@ -18,13 +18,20 @@ INSTALL
 -------
 1. Right-click the zip file > Properties > tick "Unblock" (if shown) > OK.
    Without this, Windows warns about every file inside.
-2. Right-click the zip > Extract All... into a folder of your own, for example
-   Documents\VoiceReview. Do not use Program Files.
-3. Double-click Install.bat in that folder. It looks at the computer, picks a
+2. Right-click the zip > Extract All... (anywhere, Downloads is fine).
+3. Double-click Install.bat in the unzipped folder. If Windows shows "Windows
+   protected your PC", click More info > Run anyway.
+4. Choose where to install it: C:\Program Files\Voice Review by default, or
+   Browse... for another folder. For Program Files, Windows asks once for
+   permission: click Yes. The installer then looks at the computer, picks a
    speech model it can handle, downloads it (0.5 to 1.5 GB) and the safe-mode
    model (2.5 GB), once only, and adds a "Voice Review" shortcut to the
-   desktop and to the "Send to" menu. Without safe mode: Install.bat --no-safe-mode
-   If Windows shows "Windows protected your PC", click More info > Run anyway.
+   desktop, the Start menu and the "Send to" menu, and an entry in
+   Settings > Apps. Without safe mode: Install.bat --no-safe-mode
+5. The unzipped folder is no longer needed: delete it.
+
+Updating: unzip the new version anywhere, run its Install.bat and choose the
+same folder (it is proposed by itself). Models and settings are kept.
 
 
 USE
@@ -139,8 +146,10 @@ PRIVACY.md in this folder lists every download with its source and
 fingerprint, and every file the app keeps on this computer.
 
 
-SETTINGS (config.json, in this folder)
---------------------------------------
+SETTINGS (%LOCALAPPDATA%\VoiceReview\config.json)
+-------------------------------------------------
+(Installs before 2026-11-03 kept config.json in the program folder; it is still read, and the
+file in %LOCALAPPDATA% wins.)
   "model"    speech model. Any language: large-v3-turbo (best), small (lighter).
              English only: distil-large-v3, small.en, base.en (fastest). To change, run
              Install.bat --model small   (downloads the new model).
@@ -163,7 +172,10 @@ TROUBLESHOOTING
 
 UNINSTALL
 ---------
-Run Uninstall.bat, then delete this folder.
+Settings > Apps > Voice Review > Uninstall, or run Uninstall.bat in the program
+folder. It removes the shortcuts and the program folder (for Program Files,
+Windows asks for permission). The models, settings and any unfinished recording
+stay in %LOCALAPPDATA%\VoiceReview; delete that folder to free 3 to 4 GB.
 
 
 ABOUT AND LICENCE

@@ -65,11 +65,17 @@ download with its source and fingerprint, and every file the app keeps on your c
 
 1. Download `VoiceReview-win64.zip` from the
    [latest release](../../releases/latest).
-2. Right-click the zip > Properties > tick **Unblock** > OK. Then Extract All into a folder
-   of your own, such as `Documents\VoiceReview` (not Program Files).
-3. Double-click **Install.bat**. It picks a speech model your computer can carry,
-   downloads it and the safe-mode model (about 2 to 4 GB, once only), and adds a
-   desktop shortcut and a "Send to" entry. This is the only step that needs the internet.
+2. Right-click the zip > Properties > tick **Unblock** > OK. Then Extract All, anywhere
+   (Downloads is fine).
+3. Double-click **Install.bat** and choose where to install it: `C:\Program Files\Voice Review`
+   by default (Windows asks once for permission), or Browse for another folder. It then picks a
+   speech model your computer can carry, downloads it and the safe-mode model (about 2 to 4 GB,
+   once only), and adds shortcuts on the desktop, in the Start menu and in "Send to", and an
+   entry in Settings > Apps, where it can be uninstalled. This is the only step that needs the
+   internet. Afterwards the unzipped folder can be deleted.
+
+To update, run the new version's Install.bat and keep the folder it proposes: models and
+settings are kept.
 
 Needs: a Chromium browser (Brave, Chrome, or Edge, which comes with Windows), a
 microphone, 8 GB of RAM, about 5 GB of disk. No graphics card. Full instructions are in

@@ -99,9 +99,9 @@ Comments are written into `name_review.pdf`, beside the original, which is never
 if you choose it in Settings, into the PDF itself). In the PDF, each comment carries:
 
 - the text of the comment, as transcribed (or as rewritten by safe mode);
-- an author: **your initials if you set them in Settings, otherwise the name in the app's
-  `config.json`, which the installer sets to your Windows user name**. Set your initials, or edit
-  `config.json`, if your user name should not appear;
+- an author: **your initials if you set them in Settings, otherwise the name in
+  `config.json` (`%LOCALAPPDATA%\VoiceReview\config.json`), which the installer sets to your Windows user
+  name**. Set your initials, or edit `config.json`, if your user name should not appear;
 - a marker `voice-review` used by the app to find its own comments.
 
 **Recordings never go into the PDF.** For a video, the comments go into `name_review.md` beside the video;
@@ -117,6 +117,8 @@ computer, in `%LOCALAPPDATA%\VoiceReview\videos`.
 | Your original words: each recording as mp3 and what you said | `%LOCALAPPDATA%\VoiceReview\originals` | **only if you tick "keep my recordings" in Settings (off by default)**; until you delete them; never beside the PDF |
 | What you said, for each comment safe mode rewrote, beside the rewrite, so you can approve it or use your own words | `%LOCALAPPDATA%\VoiceReview\approvals` | **only with safe mode on**; deleted as soon as you approve the rewrite, use what you said, or delete the comment; never in the PDF, the Markdown file or the video's review |
 | Settings: options, initials, safe-mode rules | `%LOCALAPPDATA%\VoiceReview\settings.json` | until uninstalled |
+| The installer's choices: speech model, threads, author name | `%LOCALAPPDATA%\VoiceReview\config.json` | until you delete the folder |
+| On Windows, the program's entry in Settings > Apps (name, version, folder) | the registry, `HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Uninstall\VoiceReview` | removed by Uninstall |
 | Which documents are open (file path, process number) | `%LOCALAPPDATA%\VoiceReview\open` | removed when the document is closed |
 | The models | `%LOCALAPPDATA%\VoiceReview\models` | until uninstalled |
 | Video reviews' working copies: each comment's time and text, and the video's full path | `%LOCALAPPDATA%\VoiceReview\videos` | until you delete them |

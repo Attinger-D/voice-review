@@ -36,10 +36,16 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-CONFIG = json.loads((ROOT / "config.json").read_text(encoding="utf-8")) if (ROOT / "config.json").exists() else {}
 sys.path.insert(0, str(HERE))  # the portable install's embedded Python does not add the script's folder
 from safe_mode import LANGUAGES, Polisher, data_dir  # noqa: E402  (no heavy imports: llama.cpp loads on first use)
 import md_review  # noqa: E402
+
+# config.json beside the app (older installs, Linux), then the user's own, which wins: since 2026-11-03 the
+# app can live in Program Files, where the installer cannot write (Daniel: "a default in Program Files").
+CONFIG = {}
+for _c in (ROOT / "config.json", data_dir() / "config.json"):
+    if _c.exists():
+        CONFIG.update(json.loads(_c.read_text(encoding="utf-8")))
 
 # Models live once per computer, outside the install folder, so a reinstall or a second unpacked copy never
 # downloads them again (Daniel, 2026-10-21). Older installs kept them beside the app; still honoured.
@@ -62,7 +68,7 @@ from werkzeug.serving import make_server  # noqa: E402
 STATIC = HERE / "static"
 # Shown in the window (top bar tooltip, ? and gear panels) and the log, so an old install can be told
 # apart at a glance (2026-10-21: a second computer ran the old version without anyone being able to tell).
-VERSION = "2026-11-03a"
+VERSION = "2026-11-03b"
 AUTHOR = setting("author", os.environ.get("USERNAME") or os.environ.get("USER") or "Reviewer")
 # large-v3-turbo since 2026-10-21: Daniel dictated in French and distil-large-v3, English only, wrote English.
 # Measured that day, same clip, CPU, 4 threads: turbo told the language = distil's speed (8.5 s vs 8.4 s)
