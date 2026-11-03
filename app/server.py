@@ -68,7 +68,7 @@ from werkzeug.serving import make_server  # noqa: E402
 STATIC = HERE / "static"
 # Shown in the window (top bar tooltip, ? and gear panels) and the log, so an old install can be told
 # apart at a glance (2026-10-21: a second computer ran the old version without anyone being able to tell).
-VERSION = "2026-11-03b"
+VERSION = "2026-11-03c"
 AUTHOR = setting("author", os.environ.get("USERNAME") or os.environ.get("USER") or "Reviewer")
 # large-v3-turbo since 2026-10-21: Daniel dictated in French and distil-large-v3, English only, wrote English.
 # Measured that day, same clip, CPU, 4 threads: turbo told the language = distil's speed (8.5 s vs 8.4 s)
@@ -242,7 +242,8 @@ def strip_pending(comment):
 
 
 def append(comment, text):
-    comment = strip_pending(comment)
+    # a clip transcribed after all, once put back in the queue (Install.bat does it), replaces its warning
+    comment = strip_pending(comment).replace(FAILED_NOTE, "").strip()
     return (comment.rstrip() + " " + text).strip() if comment else text
 
 

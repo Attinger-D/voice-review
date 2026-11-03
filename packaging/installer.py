@@ -202,10 +202,12 @@ def copy_app(src, dst):
     administrator: Windows then asks once for permission. Returns None on success, else what went wrong."""
     if dst.exists() and any(dst.iterdir()) and not (dst / "Voice Review.bat").exists():
         return f"{dst} already holds other files. Choose an empty folder, or the folder of an earlier Voice Review install."
-    # /MIR replaces an older version's files (only in a Voice Review folder, checked above); the user's
-    # config.json and models of very old installs are kept. Compiling the Python files once here keeps the
-    # app's start quick in a folder it may not write to.
-    cmd = (f'@echo off\r\nrobocopy "{src}" "{dst}" /MIR /XF config.json /XD models __pycache__ '
+    # /MIR replaces an older version's files (only in a Voice Review folder, checked above); the config.json
+    # and models of very old installs, at the top of the folder only, are kept. Full paths: a bare name
+    # matches at every depth, and "/XD models" left out ctranslate2\models, so no comment could be
+    # transcribed (Daniel's Windows laptop, 2026-11-03). Compiling the Python files once here keeps the app's
+    # start quick in a folder it may not write to.
+    cmd = (f'@echo off\r\nrobocopy "{src}" "{dst}" /MIR /XF "{dst}\\config.json" /XD "{dst}\\models" '
            '/R:2 /W:1 /NFL /NDL /NJH /NJS /NP >nul\r\n'
            'if %errorlevel% GEQ 8 exit /b 8\r\n'
            f'"{dst}\\python\\python.exe" -m compileall -q "{dst}\\app" >nul 2>&1\r\n'
@@ -255,6 +257,30 @@ def choose_and_copy(args):
             raise RuntimeError(err)
         note = err + " Choose another folder, or click Install to try again."
         target = None
+
+
+def requeue_failed():
+    """Recordings given up after three tries go back into the queue, so a reinstall is a second chance. The
+    2026-11-03b installer left the speech engine out of its copy and every comment failed (Daniel's Windows
+    laptop); the recordings were kept in failed\\. The app transcribes them the next time any document is
+    opened, and the text replaces the "could not be transcribed" warning in the comment."""
+    failed, queue = DATA / "failed", DATA / "queue"
+    n = 0
+    for j in sorted(failed.glob("*.json")) if failed.is_dir() else []:
+        audio = next((p for p in failed.glob(j.stem + ".*") if p.suffix != ".json"), None)
+        try:
+            job = json.loads(j.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        if audio is None:
+            continue
+        job["tries"] = 0
+        queue.mkdir(parents=True, exist_ok=True)
+        os.replace(audio, queue / audio.name)
+        (queue / j.name).write_text(json.dumps(job), encoding="utf-8")
+        j.unlink()
+        n += 1
+    return n
 
 
 def folder_size_kb(d):
@@ -446,6 +472,11 @@ def main():
         if not a.here:
             register(home, ver)
             print("Listed in Settings > Apps, where it can be uninstalled.")
+
+    n = requeue_failed()
+    if n:
+        print(f"\n{n} spoken comment(s) that could not be transcribed earlier are queued again: they are written"
+              " into their documents the next time you open any document with Voice Review.")
 
     size = sum(f.stat().st_size for f in SHARED.rglob("*") if f.is_file()) / 2**30
     print(f"\nModels: {SHARED} ({size:.1f} GB, shared by every copy of the app on this computer).")
